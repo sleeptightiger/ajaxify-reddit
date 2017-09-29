@@ -1,5 +1,93 @@
-nav ul li {
-  display: inline-block;
-  list-style-type: none;
-  margin-right: 25px;
+/****************************/
+/******GENERAL***************/
+/****************************/
+
+body {
+    background-color: #000;
+    color: #fff;
+}
+
+
+
+/****************************/
+/******HEADER****************/
+/****************************/
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+nav, h1 {
+    align-self: flex-end;
+    margin: 0;
+}
+
+
+
+a {
+    text-decoration: none;
+    padding: 5px;
+    text-transform: uppercase;
+    color: #fff;
+
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    margin: 5px 0;
+}
+
+
+
+/****************************/
+/******POST-CONTAINER********/
+/****************************/
+
+.post-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-around;
+
+}
+
+.post {
+    position: relative;
+    text-align: center;
+    color: #fff;
+    flex: 1;
+    display: flex;
+    width: 200px;
+    height: 200px;
+
+
+
+}
+
+.post-image {
+    width: 100%;
+    background-size: cover;
+    filter: brightness(80%);
+
+}
+
+
+
+.upper-text {
+    position: absolute;
+    top: 0;
+}
+
+.lower-text {
+    position: absolute;
+    bottom: 0;
+
+}
+
+.title {
+    font-size: .6em;
+    text-align: justify;
+    padding: 3px;
 }

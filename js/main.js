@@ -1,6 +1,7 @@
 /* GLOBAL VARIABLES UP HERE */
-var frontPage = 'https://www.reddit.com/.json';
 
+var frontPage = 'https://www.reddit.com/.json';
+var topTitleLength = 60;
 
 
 
@@ -8,7 +9,16 @@ var frontPage = 'https://www.reddit.com/.json';
 $(document).ready(function(){
 /* FUNCTION EXECUTION HERE */
   console.log('Go forth and code!');
-  requestReddit();
+
+  requestReddit(frontPage);
+  $('nav a').on('click', function() {
+      clearSearch();
+      let page = 'https://www.reddit.com/';
+      page += `${this.text}/.json`;
+
+      requestReddit(page);
+  });
+
 
 });
 
@@ -32,22 +42,26 @@ function Post(options = { }) {
 }
 
 Post.prototype.display = function() {
-    //
-    // POST HTML
-    //
-    // <div class="post">
-    //     <img src="" alt="">
-    //     <section class="upper-text">
-    //         <p class="subreddit"></p>
-    //         <span class="score"></span>
-    //     </section>
-    //     <section class="lower-text">
-    //         <span class="author"></span>
-    //         <p class="title"></p>
-    //     </section>
-    // </div>
 
-    let  html = `<div class="post"><img src="${this.thumbnail}" alt="post thumbnail"><section class="upper-text"><p class="subreddit">r/${this.subreddit}</p><span class="score">${this.score}</span></section><section class="lower-text"><span class="author">${this.author}</span><p class="title">${this.title}</p></section></div>`;
+
+    let  html = `
+    <a href="${this.url}">
+        <div class="post">
+
+            <img class="post-image" src="${this.thumbnail}" alt="post thumbnail">
+
+            <section class="upper-text">
+                <p class="subreddit">r/${this.subreddit}</p>
+                <span class="score">${this.score}</span>
+            </section>
+
+            <section class="lower-text">
+                <span class="author">${this.author}</span>
+                <p class="title">${this.title}</p>
+            </section>
+        </div>
+    </a>`;
+
     $('.post-container').append(html);
 }
 
@@ -58,12 +72,24 @@ Post.prototype.isThumbnailValid = function() {
     //console.log(https);
 }
 
+function clearSearch() {
 
-function requestReddit() {
+    $('.post-container').empty();
+}
+
+function cutText(str) {
+    if(str.length > topTitleLength) {
+        return str.substring(0, topTitleLength - 1) + '...';
+    } else {
+        return str;
+    }
+}
+
+
+function requestReddit(page) {
     $.ajax({
         method: 'GET',
-        //api.openweathermap.org/data/2.5/weather?q={city name}
-        url: frontPage,
+        url: page,
         data: '',
         dataType: 'json',
         success: onSuccess,
@@ -72,20 +98,20 @@ function requestReddit() {
 }
 
 function onSuccess(json) {
-
+    console.log(json);
     let post = new Post;
-    console.log(json.data.children);
+
     for (var i = 0; i < json.data.children.length; i++) {
         let data = json.data.children[i].data;
-        post.title = data.title;
+        post.title = cutText(data.title);
 
         //if post has no thumbnail use filler
         post.thumbnail = data.thumbnail;
         //console.log(post.isThumbnailValid());
         if(!post.isThumbnailValid()) {
-            post.thumbnail = 'img/some-image.png';
+            post.thumbnail = 'img/text-icon.jpg';
         }
-        console.log(post.thumbnail);
+
         post.subreddit = data.subreddit;
         post.author = data.author;
         post.score = data.score;
@@ -96,5 +122,5 @@ function onSuccess(json) {
 }
 
 function onError() {
-    console.log('you\'ve erred');
+    console.log('you\'ve erred Gerry');
 }
