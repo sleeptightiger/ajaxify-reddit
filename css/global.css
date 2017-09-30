@@ -23,6 +23,13 @@ body {
                 rgb(40, 40, 40);
 }
 
+.sub a {
+    color: #fff;
+    font-weight: 100;
+    font-size: .8em;
+    padding: 0 5px;
+    margin: 5px 0;
+}
 
 /****************************/
 /******HEADER****************/

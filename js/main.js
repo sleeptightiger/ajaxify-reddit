@@ -9,7 +9,7 @@ var topTitleLength = 170;
 $(document).ready(function(){
 /* FUNCTION EXECUTION HERE */
   console.log('Go forth and code!');
-
+  //requestSubreddits();
   requestReddit(frontPage);
   $('nav a').on('click', function() {
       clearSearch();
@@ -103,6 +103,17 @@ function requestReddit(page) {
     });
 }
 
+function requestSubreddits() {
+    $.ajax({
+        method: 'GET',
+        url: 'https://www.reddit.com/subreddits/.json',
+        data: '',
+        dataType: 'json',
+        success: onSecondSuccess,
+        error: onError
+    });
+}
+
 function onSuccess(json) {
     // console.log(json);
     let post = new Post;
@@ -125,6 +136,14 @@ function onSuccess(json) {
         post.display();
 
     }
+}
+
+function onSecondSuccess(json) {
+    let stream = '';
+    for (var i = 0; i < json.data.children.length; i++) {
+        stream += `<span class="sub"><a href="#">${json.data.children[i].data.display_name_prefixed}</a></span>`
+    }
+    $('.subreddit-banner').append(stream);
 }
 
 function onError() {
