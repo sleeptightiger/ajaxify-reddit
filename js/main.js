@@ -1,7 +1,7 @@
 /* GLOBAL VARIABLES UP HERE */
 
 var frontPage = 'https://www.reddit.com/.json';
-var topTitleLength = 60;
+var topTitleLength = 170;
 
 
 
@@ -17,6 +17,12 @@ $(document).ready(function(){
       page += `${this.text}/.json`;
 
       requestReddit(page);
+  });
+
+  $('nav li').on('click', function() {
+      $(this).siblings().removeClass('clicked');
+      $(this).toggleClass('clicked');
+
   });
 
 
@@ -51,12 +57,12 @@ Post.prototype.display = function() {
             <img class="post-image" src="${this.thumbnail}" alt="post thumbnail">
 
             <section class="upper-text">
-                <p class="subreddit">r/${this.subreddit}</p>
+                <p class="author">${this.author}</p>
                 <span class="score">${this.score}</span>
             </section>
 
             <section class="lower-text">
-                <span class="author">${this.author}</span>
+                <span class="subreddit">r/${this.subreddit}</span>
                 <p class="title">${this.title}</p>
             </section>
         </div>
@@ -98,7 +104,7 @@ function requestReddit(page) {
 }
 
 function onSuccess(json) {
-    console.log(json);
+    // console.log(json);
     let post = new Post;
 
     for (var i = 0; i < json.data.children.length; i++) {
