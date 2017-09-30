@@ -10,10 +10,15 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+a {
+    text-decoration: none;
+    color: #fff;
+}
 
 /****************************/
 /****SUBREDDIT-BANNER********/
 /****************************/
+
 
 .subreddit-banner {
     /*background-color: rgb(30, 30, 30);*/
@@ -21,14 +26,24 @@ body {
     background: linear-gradient(to top, rgba(0, 0, 0, .7),
                 rgba(0, 0, 0, 0.1) 80%),
                 rgb(40, 40, 40);
+    height: 30px;
+    display: flex;
+    align-items: flex-end;
+    align-content: space-around;
+    margin-bottom: 5px;
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 
+
+
 .sub a {
-    color: #fff;
+
     font-weight: 100;
     font-size: .8em;
     padding: 0 5px;
     margin: 5px 0;
+
 }
 
 /****************************/
@@ -37,6 +52,8 @@ body {
 .header-container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
     padding: 20px 30px;
     border-bottom: 1px solid #000;
     border-top: 1px solid #000;
@@ -45,8 +62,14 @@ body {
 
 }
 
+nav {
+    flex: 3;
+}
+
 h1 {
-    letter-spacing: 1dpx;
+    letter-spacing: 2px;
+    /*font-weight: 400;*/
+    flex: 1;
 }
 
 nav, h1 {
@@ -57,10 +80,10 @@ nav, h1 {
 
 
 nav a {
-    text-decoration: none;
+
     padding: 15px;
     margin: 0;
-    color: #fff;
+
     transition: all 300ms ease-in-out;
     letter-spacing: 4px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.9);
@@ -80,7 +103,8 @@ a:hover {
 ul {
     list-style-type: none;
     display: flex;
-    margin: 5px 0;
+    justify-content: flex-end;
+    margin: 0;
     text-transform: uppercase;
 }
 

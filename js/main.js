@@ -9,7 +9,7 @@ var topTitleLength = 170;
 $(document).ready(function(){
 /* FUNCTION EXECUTION HERE */
   console.log('Go forth and code!');
-  //requestSubreddits();
+  requestSubreddits();
   requestReddit(frontPage);
   $('nav a').on('click', function() {
       clearSearch();
@@ -143,7 +143,7 @@ function onSecondSuccess(json) {
     for (var i = 0; i < json.data.children.length; i++) {
         stream += `<span class="sub"><a href="#">${json.data.children[i].data.display_name_prefixed}</a></span>`
     }
-    $('.subreddit-banner').append(stream);
+    $('.subreddit-banner').html(stream);
 }
 
 function onError() {
