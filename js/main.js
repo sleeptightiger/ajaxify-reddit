@@ -13,7 +13,16 @@ $(document).ready(function(){
   requestReddit(subreddits);
   requestReddit(frontPage);
 
+  $(window).scroll(function () {
+   if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
+       alert("End Of The Page");
+   }
+});
+
+    //search on clicking subreddit in banner
   $('.subreddit-banner').on('click', '.sub a', function() {
+      $(this).siblings().removeClass('clicked');
+      $(this).toggleClass('clicked');
       clearSearch();
       let searchReddit = 'https://www.reddit.com/';
       searchReddit += $(this).text() + '/.json';
@@ -22,16 +31,23 @@ $(document).ready(function(){
 
   });
 
+  $('.subreddit-banner').on('click', 'li.sub', function() {
+      $(this).siblings().removeClass('clicked');
+      $(this).toggleClass('clicked');
 
+  });
+
+    //search on clicking nav tabs
   $('nav a').on('click', function() {
       clearSearch();
       //https://www.reddit.com/r/funny/.json
       let page = 'https://www.reddit.com/';
       page += `${this.text}/.json`;
-      console.log(page);
+      //console.log(page);
       requestReddit(page);
   });
 
+  //add hover effect to links, nav and banner
   $('nav li').on('click', function() {
       $(this).siblings().removeClass('clicked');
       $(this).toggleClass('clicked');
