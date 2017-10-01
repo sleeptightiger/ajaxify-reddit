@@ -1,6 +1,7 @@
 /* GLOBAL VARIABLES UP HERE */
 
 var frontPage = 'https://www.reddit.com/.json';
+var subreddits = 'https://www.reddit.com/subreddits/.json';
 var topTitleLength = 170;
 
 
@@ -9,13 +10,25 @@ var topTitleLength = 170;
 $(document).ready(function(){
 /* FUNCTION EXECUTION HERE */
   console.log('Go forth and code!');
-  requestSubreddits();
+  requestReddit(subreddits);
   requestReddit(frontPage);
+
+  $('.subreddit-banner').on('click', '.sub a', function() {
+      clearSearch();
+      let searchReddit = 'https://www.reddit.com/';
+      searchReddit += $(this).text() + '/.json';
+      requestReddit(searchReddit);
+      //console.log();
+
+  });
+
+
   $('nav a').on('click', function() {
       clearSearch();
+      //https://www.reddit.com/r/funny/.json
       let page = 'https://www.reddit.com/';
       page += `${this.text}/.json`;
-
+      console.log(page);
       requestReddit(page);
   });
 
@@ -24,6 +37,8 @@ $(document).ready(function(){
       $(this).toggleClass('clicked');
 
   });
+
+
 
 
 });
@@ -103,47 +118,45 @@ function requestReddit(page) {
     });
 }
 
-function requestSubreddits() {
-    $.ajax({
-        method: 'GET',
-        url: 'https://www.reddit.com/subreddits/.json',
-        data: '',
-        dataType: 'json',
-        success: onSecondSuccess,
-        error: onError
-    });
-}
 
 function onSuccess(json) {
     // console.log(json);
     let post = new Post;
+    let kind = json.data.children[0].kind;
+    console.log(kind);
+    if(kind === 't3') {
+        for (var i = 0; i < json.data.children.length; i++) {
+            let data = json.data.children[i].data;
+            post.title = cutText(data.title);
 
-    for (var i = 0; i < json.data.children.length; i++) {
-        let data = json.data.children[i].data;
-        post.title = cutText(data.title);
+            //if post has no thumbnail use filler
+            post.thumbnail = data.thumbnail;
+            //console.log(post.isThumbnailValid());
+            if(!post.isThumbnailValid()) {
+                post.thumbnail = 'img/text-icon.jpg';
+            }
 
-        //if post has no thumbnail use filler
-        post.thumbnail = data.thumbnail;
-        //console.log(post.isThumbnailValid());
-        if(!post.isThumbnailValid()) {
-            post.thumbnail = 'img/text-icon.jpg';
+            post.subreddit = data.subreddit;
+            post.author = data.author;
+            post.score = data.score;
+            post.url = data.url;
+            post.display();
+
         }
+    } else {
+        //for populating .subreddit-banner
+        let stream = '<ul>';
+        for (var i = 0; i < json.data.children.length; i++) {
+            stream +=
+                `<li class="sub">
+                    <a href="#">${json.data.children[i].data.display_name_prefixed}</a>
+                </li>`;
 
-        post.subreddit = data.subreddit;
-        post.author = data.author;
-        post.score = data.score;
-        post.url = data.url;
-        post.display();
-
+        }
+        stream += '</ul>';
+        $('.subreddit-banner').append(stream);
     }
-}
 
-function onSecondSuccess(json) {
-    let stream = '';
-    for (var i = 0; i < json.data.children.length; i++) {
-        stream += `<span class="sub"><a href="#">${json.data.children[i].data.display_name_prefixed}</a></span>`
-    }
-    $('.subreddit-banner').html(stream);
 }
 
 function onError() {
